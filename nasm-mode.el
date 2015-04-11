@@ -2,6 +2,11 @@
 
 ;; This is free and unencumbered software released into the public domain.
 
+;; Author: Christopher Wellons <wellons@nullprogram.com>
+;; URL: https://github.com/skeeto/nasm-mode
+;; Version: 1.0.0
+;; Package-Requires: ((emacs "24.3"))
+
 ;;; Commentary:
 
 ;; The keyword lists are up to date as of NASM 2.11.08.
