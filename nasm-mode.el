@@ -405,14 +405,18 @@
 
 (defconst nasm-mode-syntax-table
   (let ((table (make-syntax-table)))
-    (modify-syntax-entry ?_  "w" table)
-    (modify-syntax-entry ?\. "w" table)
-    (modify-syntax-entry ?\; "<" table)  ; Comment starter
-    (modify-syntax-entry ?\n ">" table)  ; Comment ender
-    (modify-syntax-entry ?\" "\"" table) ; String quote
-    (modify-syntax-entry ?\' "\"" table) ; String quote
-    (modify-syntax-entry ?\` "\"" table) ; String quote
-    table)
+    (prog1 table
+      (modify-syntax-entry ?_  "w" table)
+      (modify-syntax-entry ?\. "w" table)
+      (modify-syntax-entry ?\? "w" table)
+      (modify-syntax-entry ?#  "w" table)
+      (modify-syntax-entry ?@  "w" table)
+      (modify-syntax-entry ?~  "w" table)
+      (modify-syntax-entry ?\; "<" table)
+      (modify-syntax-entry ?\n ">" table)
+      (modify-syntax-entry ?\" "\"" table)
+      (modify-syntax-entry ?\' "\"" table)
+      (modify-syntax-entry ?\` "\"" table)))
   "Syntax table for `nasm-mode'.")
 
 (defmacro nasm--opt (keywords)
