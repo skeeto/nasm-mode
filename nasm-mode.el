@@ -456,6 +456,7 @@
 
 ;;;###autoload
 (define-derived-mode nasm-mode prog-mode "NASM"
+  "Major mode for editing NASM assembly programs."
   :group 'nasm-mode
   (setf font-lock-defaults '(nasm-font-lock-keywords nil :case-fold)
         indent-line-function #'nasm-indent-line
