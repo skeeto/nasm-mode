@@ -420,6 +420,18 @@
       (modify-syntax-entry ?\` "\"" table)))
   "Syntax table for `nasm-mode'.")
 
+(defvar nasm-mode-map
+  (let ((map (make-sparse-keymap)))
+    (prog1 map
+      (define-key map (kbd ":") #'nasm-colon)))
+  "Key bindings for `nasm-mode'.")
+
+(defun nasm-colon ()
+  "Insert a colon and convert the current line into a label."
+  (interactive)
+  (call-interactively 'self-insert-command)
+  (nasm-indent-line))
+
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
