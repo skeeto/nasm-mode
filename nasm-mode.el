@@ -384,17 +384,18 @@
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
 (defconst nasm-label-regexp
-  "^\\s-*[a-zA-Z0-9_.?][a-zA-Z0-9_$#@~.?]*:?\\>"
+  "\\s-*[a-zA-Z0-9_.?][a-zA-Z0-9_$#@~.?]*\\>"
   "Regexp for `nasm-mode'.")
 
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
     (,(regexp-opt nasm-registers 'words) . font-lock-variable-name-face)
-    (,(regexp-opt nasm-instructions 'words) . font-lock-keyword-face)
     (,(regexp-opt nasm-prefix 'words) . font-lock-keyword-face)
     (,(regexp-opt nasm-directives 'words) . font-lock-builtin-face)
     (,(regexp-opt nasm-pp-directives 'words) . font-lock-preprocessor-face)
-    (,nasm-label-regexp . font-lock-function-name-face))
+    (,(concat "^" nasm-label-regexp "\\s-*:") . font-lock-function-name-face)
+    (,(regexp-opt nasm-instructions 'words) . font-lock-keyword-face)
+    (,(concat "^" nasm-label-regexp) . font-lock-function-name-face))
   "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
@@ -412,16 +413,17 @@
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
-     (concat "\\s-*" (regexp-opt ,keywords 'words))))
+     (regexp-opt ,keywords 'words)))
 
 (defun nasm-indent-line ()
   "Indent current line as NASM assembly code."
   (interactive)
   (let ((orig (- (point-max) (point))))
-    (beginning-of-line)
+    (back-to-indentation)
     (if (or (looking-at (nasm--opt nasm-directives))
             (looking-at (nasm--opt nasm-pp-directives))
-            (looking-at "^\\s-*[[;]")
+            (looking-at "[[;]")
+            (looking-at (concat nasm-label-regexp "\\s-*:"))
             (and (looking-at nasm-label-regexp)
                  (not (looking-at (nasm--opt nasm-instructions)))
                  (not (looking-at (nasm--opt nasm-prefix)))))
