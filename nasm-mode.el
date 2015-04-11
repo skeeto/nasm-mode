@@ -412,7 +412,7 @@
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
-     (concat "\\s-*" (regexp-opt ,keywords t))))
+     (concat "\\s-*" (regexp-opt ,keywords 'words))))
 
 (defun nasm-indent-line ()
   "Indent current line as NASM assembly code."
