@@ -389,7 +389,7 @@
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
 (defconst nasm-label-regexp
-  "\\s-*[a-zA-Z0-9_.?][a-zA-Z0-9_$#@~.?]*\\>"
+  "\\<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\>"
   "Regexp for `nasm-mode'.")
 
 (defconst nasm-font-lock-keywords
@@ -398,9 +398,10 @@
     (,(regexp-opt nasm-prefix 'words) . font-lock-keyword-face)
     (,(regexp-opt nasm-directives 'words) . font-lock-builtin-face)
     (,(regexp-opt nasm-pp-directives 'words) . font-lock-preprocessor-face)
-    (,(concat "^" nasm-label-regexp "\\s-*:") . font-lock-function-name-face)
+    (,(concat "^\\s-*" nasm-label-regexp "\\s-*:")
+     . font-lock-function-name-face)
     (,(regexp-opt nasm-instructions 'words) . font-lock-keyword-face)
-    (,(concat "^" nasm-label-regexp) . font-lock-function-name-face))
+    (,(concat "^\\s-*" nasm-label-regexp) . font-lock-function-name-face))
   "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
