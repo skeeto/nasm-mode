@@ -407,6 +407,12 @@
   "\\<$?[-+0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
   "Regexp for `nasm-mode' for matching numeric constants.")
 
+(defconst nasm-imenu-generic-expression
+  `((nil ,(concat "^\\s-*" nasm-label-regexp) 1)
+    (nil ,(concat (regexp-opt '("%define" "%macro") 'words)
+                  "\\s-+\\([a-zA-Z0-9_$#@~.?]+\\)") 2))
+  "Expressions for `imenu-generic-expression'.")
+
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
     (,(regexp-opt nasm-registers 'words) . font-lock-variable-name-face)
@@ -422,6 +428,8 @@
   (let ((table (make-syntax-table)))
     (prog1 table
       (modify-syntax-entry ?_  "w" table)
+      (modify-syntax-entry ?#  "w" table)
+      (modify-syntax-entry ?@  "w" table)
       (modify-syntax-entry ?\. "w" table)
       (modify-syntax-entry ?\? "w" table)
       (modify-syntax-entry ?#  "w" table)
@@ -474,8 +482,8 @@
   (setf font-lock-defaults '(nasm-font-lock-keywords nil :case-fold)
         indent-line-function #'nasm-indent-line
         comment-start ";"
-        imenu-generic-expression
-        `((nil ,(concat "^\\s-*" nasm-label-regexp) 1))))
+        imenu-generic-expression nasm-imenu-generic-expression))
+
 
 (provide 'nasm-mode)
 
