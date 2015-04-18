@@ -484,7 +484,6 @@
         comment-start ";"
         imenu-generic-expression nasm-imenu-generic-expression))
 
-
 (provide 'nasm-mode)
 
 ;;; nasm-mode.el ends here
