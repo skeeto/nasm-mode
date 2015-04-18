@@ -395,7 +395,11 @@
 
 (defconst nasm-label-regexp
   "\\(\\<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\>\\)\\s-*:"
-  "Regexp for `nasm-mode'.")
+  "Regexp for `nasm-mode' for matching labels.")
+
+(defconst nasm-constant-regexp
+  "\\<$?[-+0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
+  "Regexp for `nasm-mode' for matching numeric constants.")
 
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
@@ -404,7 +408,8 @@
     (,(regexp-opt nasm-instructions 'words) . font-lock-builtin-face)
     (,(regexp-opt nasm-directives 'words) . font-lock-keyword-face)
     (,(regexp-opt nasm-pp-directives 'words) . font-lock-preprocessor-face)
-    (,(concat "^\\s-*" nasm-label-regexp) (1 font-lock-function-name-face)))
+    (,(concat "^\\s-*" nasm-label-regexp) (1 font-lock-function-name-face))
+    (,nasm-constant-regexp . font-lock-constant-face))
   "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
