@@ -1,4 +1,4 @@
-;;; nasm-mode.el --- major mode for nasm assembly -*- lexical-binding: t; -*-
+;;; nasm-mode.el --- NASM x86 assembly major mode -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
