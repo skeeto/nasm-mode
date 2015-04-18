@@ -22,6 +22,8 @@
 
 ;;; Code:
 
+(require 'imenu)
+
 (defgroup nasm-mode ()
   "Options for `nasm-mode'."
   :group 'languages)
