@@ -460,7 +460,9 @@
   :group 'nasm-mode
   (setf font-lock-defaults '(nasm-font-lock-keywords nil :case-fold)
         indent-line-function #'nasm-indent-line
-        comment-start ";"))
+        comment-start ";"
+        imenu-generic-expression
+        `((nil ,(concat "^\\s-*\\(" nasm-label-regexp "\\)\\s-*:") 1))))
 
 (provide 'nasm-mode)
 
