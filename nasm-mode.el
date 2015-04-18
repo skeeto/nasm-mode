@@ -9,6 +9,11 @@
 
 ;;; Commentary:
 
+;; Labels without colons are not recognized as labels by this mode,
+;; since, without a parser equal to that of NASM itself, it's
+;; otherwise ambiguous between macros and labels. This covers both
+;; indentation and imenu support.
+
 ;; The keyword lists are up to date as of NASM 2.11.08.
 
 ;;; Code:
@@ -389,19 +394,17 @@
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
 (defconst nasm-label-regexp
-  "\\<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\>"
+  "\\(\\<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\>\\)\\s-*:"
   "Regexp for `nasm-mode'.")
 
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
     (,(regexp-opt nasm-registers 'words) . font-lock-variable-name-face)
-    (,(regexp-opt nasm-prefix 'words) . font-lock-keyword-face)
-    (,(regexp-opt nasm-directives 'words) . font-lock-builtin-face)
+    (,(regexp-opt nasm-prefix 'words) . font-lock-builtin-face)
+    (,(regexp-opt nasm-instructions 'words) . font-lock-builtin-face)
+    (,(regexp-opt nasm-directives 'words) . font-lock-keyword-face)
     (,(regexp-opt nasm-pp-directives 'words) . font-lock-preprocessor-face)
-    (,(concat "^\\s-*" nasm-label-regexp "\\s-*:")
-     . font-lock-function-name-face)
-    (,(regexp-opt nasm-instructions 'words) . font-lock-keyword-face)
-    (,(concat "^\\s-*" nasm-label-regexp) . font-lock-function-name-face))
+    (,(concat "^\\s-*" nasm-label-regexp) (1 font-lock-function-name-face)))
   "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
@@ -445,10 +448,7 @@
     (if (or (looking-at (nasm--opt nasm-directives))
             (looking-at (nasm--opt nasm-pp-directives))
             (looking-at "[[;]")
-            (looking-at (concat nasm-label-regexp "\\s-*:"))
-            (and (looking-at nasm-label-regexp)
-                 (not (looking-at (nasm--opt nasm-instructions)))
-                 (not (looking-at (nasm--opt nasm-prefix)))))
+            (looking-at nasm-label-regexp))
         (indent-line-to 0)
       (indent-line-to nasm-basic-offset))
     (when (> (- (point-max) orig) (point))
@@ -462,7 +462,7 @@
         indent-line-function #'nasm-indent-line
         comment-start ";"
         imenu-generic-expression
-        `((nil ,(concat "^\\s-*\\(" nasm-label-regexp "\\)\\s-*:") 1))))
+        `((nil ,(concat "^\\s-*" nasm-label-regexp) 1))))
 
 (provide 'nasm-mode)
 
