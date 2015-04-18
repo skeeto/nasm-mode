@@ -16,6 +16,10 @@
 
 ;; The keyword lists are up to date as of NASM 2.11.08.
 
+;; TODO:
+;;  * Line continuation awareness
+;;  * Improve nasm-colon, and add comment support
+
 ;;; Code:
 
 (defgroup nasm-mode ()
