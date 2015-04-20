@@ -35,7 +35,7 @@
   "Options for `nasm-mode'."
   :group 'languages)
 
-(defcustom nasm-basic-offset 8
+(defcustom nasm-basic-offset (default-value 'tab-width)
   "Indentation level for `nasm-mode'."
   :group 'nasm-mode)
 
