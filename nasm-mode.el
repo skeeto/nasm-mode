@@ -403,7 +403,13 @@
       "%ixdefine" "%line" "%local" "%macro" "%pathsearch" "%pop" "%push"
       "%rep" "%repl" "%rmacro" "%rotate" "%stacksize" "%strcat"
       "%strlen" "%substr" "%undef" "%unimacro" "%unmacro" "%use"
-      "%warning" "%xdefine")
+      "%warning" "%xdefine" "istruc" "at" "iend" "align" "alignb"
+      "struc" "endstruc" "__LINE__" "__FILE__" "%comment" "%endcomment"
+      "__NASM_MAJOR__" " __NASM_MINOR__" "__NASM_SUBMINOR__"
+      "___NASM_PATCHLEVEL__" "__NASM_VERSION_ID__" "__NASM_VER__"
+      "__BITS__" "__OUTPUT_FORMAT__" "__DATE__" "__TIME__" "__DATE_NUM__"
+      "__TIME_NUM__" "__UTC_DATE__" "__UTC_TIME__" "__UTC_DATE_NUM__"
+      "__UTC_TIME_NUM__" "__POSIX_TIME__" " __PASS__" "SECTALIGN")
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
 (defconst nasm-label-regexp
