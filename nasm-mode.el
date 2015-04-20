@@ -420,19 +420,24 @@
   "\\<$?[-+0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
   "Regexp for `nasm-mode' for matching numeric constants.")
 
+(defmacro nasm--opt (keywords)
+  "Prepare KEYWORDS for `looking-at'."
+  `(eval-when-compile
+     (regexp-opt ,keywords 'words)))
+
 (defconst nasm-imenu-generic-expression
   `((nil ,(concat "^\\s-*" nasm-label-regexp) 1)
-    (nil ,(concat (regexp-opt '("%define" "%macro") 'words)
+    (nil ,(concat (nasm--opt '("%define" "%macro"))
                   "\\s-+\\([a-zA-Z0-9_$#@~.?]+\\)") 2))
   "Expressions for `imenu-generic-expression'.")
 
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
-    (,(regexp-opt nasm-registers 'words) . font-lock-variable-name-face)
-    (,(regexp-opt nasm-prefix 'words) . font-lock-builtin-face)
-    (,(regexp-opt nasm-instructions 'words) . font-lock-builtin-face)
-    (,(regexp-opt nasm-directives 'words) . font-lock-keyword-face)
-    (,(regexp-opt nasm-pp-directives 'words) . font-lock-preprocessor-face)
+    (,(nasm--opt nasm-registers) . font-lock-variable-name-face)
+    (,(nasm--opt nasm-prefix) . font-lock-builtin-face)
+    (,(nasm--opt nasm-instructions) . font-lock-builtin-face)
+    (,(nasm--opt nasm-directives) . font-lock-keyword-face)
+    (,(nasm--opt nasm-pp-directives) . font-lock-preprocessor-face)
     (,(concat "^\\s-*" nasm-label-regexp) (1 font-lock-function-name-face))
     (,nasm-constant-regexp . font-lock-constant-face))
   "Keywords for `nasm-mode'.")
@@ -466,11 +471,6 @@
   (interactive)
   (call-interactively #'self-insert-command)
   (nasm-indent-line))
-
-(defmacro nasm--opt (keywords)
-  "Prepare KEYWORDS for `looking-at'."
-  `(eval-when-compile
-     (regexp-opt ,keywords 'words)))
 
 (defun nasm-indent-line ()
   "Indent current line as NASM assembly code."
