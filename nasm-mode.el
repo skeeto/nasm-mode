@@ -377,7 +377,8 @@
       "xlatb" "xor" "xorpd" "xorps" "xrstor" "xrstor64" "xrstors"
       "xrstors64" "xsave" "xsave64" "xsavec" "xsavec64" "xsaveopt"
       "xsaveopt64" "xsaves" "xsaves64" "xsetbv" "xsha1" "xsha256" "xstore"
-      "xtest" "cmov" "j" "set")
+      "xtest" "cmov" "j" "set" "jb" "jl" "jbe" "jle" "jo" "jno" "jz" "je"
+      "jnz" "jne" "js" "jns")
     "NASM instructions (insnsn.c) for `nasm-mode'."))
 
 (eval-and-compile
