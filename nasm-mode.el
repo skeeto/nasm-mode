@@ -43,42 +43,42 @@
   "Indentation level for `nasm-mode'."
   :group 'nasm-mode)
 
-(defface nasm-registers-face
+(defface nasm-registers
   '((t :inherit (font-lock-variable-name-face)))
   "Face for registers."
   :group 'nasm-mode-faces)
 
-(defface nasm-prefix-face
+(defface nasm-prefix
   '((t :inherit (font-lock-builtin-face)))
   "Face for prefix."
   :group 'nasm-mode-faces)
 
-(defface nasm-types-face
+(defface nasm-types
   '((t :inherit (font-lock-type-face)))
   "Face for types."
   :group 'nasm-mode-faces)
 
-(defface nasm-instructions-face
+(defface nasm-instructions
   '((t :inherit (font-lock-builtin-face)))
   "Face for instructions."
   :group 'nasm-mode-faces)
 
-(defface nasm-directives-face
+(defface nasm-directives
   '((t :inherit (font-lock-keyword-face)))
   "Face for directives."
   :group 'nasm-mode-faces)
 
-(defface nasm-preprocessor-face
+(defface nasm-preprocessor
   '((t :inherit (font-lock-preprocessor-face)))
   "Face for preprocessor directives."
   :group 'nasm-mode-faces)
 
-(defface nasm-labels-face
+(defface nasm-labels
   '((t :inherit (font-lock-function-name-face)))
   "Face for label."
   :group 'nasm-mode-faces)
 
-(defface nasm-constant-face
+(defface nasm-constant
   '((t :inherit (font-lock-constant-face)))
   "Face for constant."
   :group 'nasm-mode-faces)
@@ -557,14 +557,14 @@
 
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
-    (,(nasm--opt nasm-registers) . 'nasm-registers-face)
-    (,(nasm--opt nasm-prefix) . 'nasm-prefix-face)
-    (,(nasm--opt nasm-types) . 'nasm-types-face)
-    (,(nasm--opt nasm-instructions) . 'nasm-instructions-face)
-    (,(nasm--opt nasm-directives) . 'nasm-directives-face)
-    (,(nasm--opt nasm-pp-directives) . 'nasm-preprocessor-face)
-    (,(concat "^\\s-*" nasm-label-regexp) (1 'nasm-labels-face))
-    (,nasm-constant-regexp . 'nasm-constant-face))
+    (,(nasm--opt nasm-registers) . 'nasm-registers)
+    (,(nasm--opt nasm-prefix) . 'nasm-prefix)
+    (,(nasm--opt nasm-types) . 'nasm-types)
+    (,(nasm--opt nasm-instructions) . 'nasm-instructions)
+    (,(nasm--opt nasm-directives) . 'nasm-directives)
+    (,(nasm--opt nasm-pp-directives) . 'nasm-preprocessor)
+    (,(concat "^\\s-*" nasm-label-regexp) (1 'nasm-labels))
+    (,nasm-constant-regexp . 'nasm-constant))
 "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
