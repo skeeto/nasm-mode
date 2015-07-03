@@ -35,9 +35,53 @@
   "Options for `nasm-mode'."
   :group 'languages)
 
+(defgroup nasm-mode-faces ()
+  "Faces used by `nasm-mode'."
+  :group 'nasm-mode)
+
 (defcustom nasm-basic-offset (default-value 'tab-width)
   "Indentation level for `nasm-mode'."
   :group 'nasm-mode)
+
+(defface nasm-registers
+  '((t :inherit (font-lock-variable-name-face)))
+  "Face for registers."
+  :group 'nasm-mode-faces)
+
+(defface nasm-prefix
+  '((t :inherit (font-lock-builtin-face)))
+  "Face for prefix."
+  :group 'nasm-mode-faces)
+
+(defface nasm-types
+  '((t :inherit (font-lock-type-face)))
+  "Face for types."
+  :group 'nasm-mode-faces)
+
+(defface nasm-instructions
+  '((t :inherit (font-lock-builtin-face)))
+  "Face for instructions."
+  :group 'nasm-mode-faces)
+
+(defface nasm-directives
+  '((t :inherit (font-lock-keyword-face)))
+  "Face for directives."
+  :group 'nasm-mode-faces)
+
+(defface nasm-preprocessor
+  '((t :inherit (font-lock-preprocessor-face)))
+  "Face for preprocessor directives."
+  :group 'nasm-mode-faces)
+
+(defface nasm-labels
+  '((t :inherit (font-lock-function-name-face)))
+  "Face for label."
+  :group 'nasm-mode-faces)
+
+(defface nasm-constant
+  '((t :inherit (font-lock-constant-face)))
+  "Face for constant."
+  :group 'nasm-mode-faces)
 
 (eval-and-compile
   (defconst nasm-registers
@@ -513,15 +557,15 @@
 
 (defconst nasm-font-lock-keywords
   `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
-    (,(nasm--opt nasm-registers) . font-lock-variable-name-face)
-    (,(nasm--opt nasm-prefix) . font-lock-builtin-face)
-    (,(nasm--opt nasm-types) . font-lock-type-face)
-    (,(nasm--opt nasm-instructions) . font-lock-builtin-face)
-    (,(nasm--opt nasm-directives) . font-lock-keyword-face)
-    (,(nasm--opt nasm-pp-directives) . font-lock-preprocessor-face)
-    (,(concat "^\\s-*" nasm-label-regexp) (1 font-lock-function-name-face))
-    (,nasm-constant-regexp . font-lock-constant-face))
-  "Keywords for `nasm-mode'.")
+    (,(nasm--opt nasm-registers) . 'nasm-registers)
+    (,(nasm--opt nasm-prefix) . 'nasm-prefix)
+    (,(nasm--opt nasm-types) . 'nasm-types)
+    (,(nasm--opt nasm-instructions) . 'nasm-instructions)
+    (,(nasm--opt nasm-directives) . 'nasm-directives)
+    (,(nasm--opt nasm-pp-directives) . 'nasm-preprocessor)
+    (,(concat "^\\s-*" nasm-label-regexp) (1 'nasm-labels))
+    (,nasm-constant-regexp . 'nasm-constant))
+"Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
   (let ((table (make-syntax-table)))
