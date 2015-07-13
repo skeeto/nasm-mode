@@ -588,7 +588,8 @@
 (defvar nasm-mode-map
   (let ((map (make-sparse-keymap)))
     (prog1 map
-      (define-key map (kbd ":") #'nasm-colon)))
+      (define-key map (kbd ":") #'nasm-colon)
+      (define-key map (kbd ";") #'nasm-comment)))
   "Key bindings for `nasm-mode'.")
 
 (defun nasm-colon ()
@@ -611,6 +612,79 @@
       (indent-line-to nasm-basic-offset))
     (when (> (- (point-max) orig) (point))
       (goto-char (- (point-max) orig)))))
+
+(defun nasm--current-line ()
+  "Return the current line as a string."
+  (save-excursion
+    (let ((start (progn (beginning-of-line) (point)))
+          (end (progn (end-of-line) (point))))
+      (buffer-substring-no-properties start end))))
+
+(defun nasm--empty-line-p ()
+  "Return non-nil if current line has non-whitespace."
+  (not (string-match-p "\\S-" (nasm--current-line))))
+
+(defun nasm--line-has-comment-p ()
+  "Return non-nil if current line contains a comment."
+  (save-excursion
+    (end-of-line)
+    (nth 4 (syntax-ppss))))
+
+(defun nasm--line-has-non-comment-p ()
+  "Return non-nil of the current line has code."
+  (let* ((line (nasm--current-line))
+         (match (string-match-p "\\S-" line)))
+    (when match
+      (not (eql ?\; (aref line match))))))
+
+(defun nasm--inside-indentation-p ()
+  "Return non-nil if point is within the indentation."
+  (save-excursion
+    (let ((point (point))
+          (start (progn (beginning-of-line) (point)))
+          (end (progn (back-to-indentation) (point))))
+      (<= start point end))))
+
+(defun nasm-comment (&optional arg)
+  "Begin or edit a comment with context-sensitive placement.
+
+The right-hand comment gutter is far away from the code, so this
+command uses the mark ring to help move back and forth between
+code and the comment gutter.
+
+* If no comment gutter exists yet, mark the current position and
+  jump to it.
+* If already within the gutter, pop the top mark and return to
+  the code.
+* If on a line with no code, just insert a comment character.
+* If within the indentation, just insert a comment character.
+  This is intended prevent interference when the intention is to
+  comment out the line.
+
+With a prefix arg, kill the comment on the current line with
+`comment-kill'."
+  (interactive "p")
+  (if (not (eql arg 1))
+      (comment-kill nil)
+    (cond
+     ;; Empty line? Insert.
+     ((nasm--empty-line-p)
+      (insert ";"))
+     ;; Inside the indentation? Comment out the line.
+     ((nasm--inside-indentation-p)
+      (insert ";"))
+     ;; Currently in a right-side comment? Return.
+     ((and (nasm--line-has-comment-p)
+           (nasm--line-has-non-comment-p)
+           (nth 4 (syntax-ppss)))
+      (setf (point) (mark))
+      (pop-mark))
+     ;; Line has code? Mark and jump to right-side comment.
+     ((nasm--line-has-non-comment-p)
+      (push-mark)
+      (comment-indent))
+     ;; Otherwise insert.
+     ((insert ";")))))
 
 ;;;###autoload
 (define-derived-mode nasm-mode prog-mode "NASM"
