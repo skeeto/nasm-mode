@@ -537,17 +537,17 @@
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
 (defconst nasm-label-regexp
-  "\\(\\<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\>\\)\\s-*:"
+  "\\(\\_<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\_>\\)\\s-*:"
   "Regexp for `nasm-mode' for matching labels.")
 
 (defconst nasm-constant-regexp
-  "\\<$?[-+0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
+  "\\_<$?[-+0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\_>"
   "Regexp for `nasm-mode' for matching numeric constants.")
 
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
-     (regexp-opt ,keywords 'words)))
+     (regexp-opt ,keywords 'symbols)))
 
 (defconst nasm-imenu-generic-expression
   `((nil ,(concat "^\\s-*" nasm-label-regexp) 1)
@@ -556,7 +556,7 @@
   "Expressions for `imenu-generic-expression'.")
 
 (defconst nasm-font-lock-keywords
-  `(("\\<\\.[a-zA-Z0-9_$#@~.?]+\\>" . font-lock-type-face)
+  `(("\\_<\\.[a-zA-Z0-9_$#@~.?]+\\_>" . font-lock-type-face)
     (,(nasm--opt nasm-registers) . 'nasm-registers)
     (,(nasm--opt nasm-prefix) . 'nasm-prefix)
     (,(nasm--opt nasm-types) . 'nasm-types)
@@ -568,21 +568,19 @@
 "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
-  (let ((table (make-syntax-table)))
-    (prog1 table
-      (modify-syntax-entry ?_  "w" table)
-      (modify-syntax-entry ?#  "w" table)
-      (modify-syntax-entry ?@  "w" table)
-      (modify-syntax-entry ?\. "w" table)
-      (modify-syntax-entry ?\? "w" table)
-      (modify-syntax-entry ?#  "w" table)
-      (modify-syntax-entry ?@  "w" table)
-      (modify-syntax-entry ?~  "w" table)
-      (modify-syntax-entry ?\; "<" table)
-      (modify-syntax-entry ?\n ">" table)
-      (modify-syntax-entry ?\" "\"" table)
-      (modify-syntax-entry ?\' "\"" table)
-      (modify-syntax-entry ?\` "\"" table)))
+  (with-syntax-table (copy-syntax-table)
+    (modify-syntax-entry ?_  "_")
+    (modify-syntax-entry ?#  "_")
+    (modify-syntax-entry ?@  "_")
+    (modify-syntax-entry ?\? "_")
+    (modify-syntax-entry ?~  "_")
+    (modify-syntax-entry ?\. "w")
+    (modify-syntax-entry ?\; "<")
+    (modify-syntax-entry ?\n ">")
+    (modify-syntax-entry ?\" "\"")
+    (modify-syntax-entry ?\' "\"")
+    (modify-syntax-entry ?\` "\"")
+    (syntax-table))
   "Syntax table for `nasm-mode'.")
 
 (defvar nasm-mode-map
