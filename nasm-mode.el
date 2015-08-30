@@ -641,7 +641,7 @@
     (let ((point (point))
           (start (progn (beginning-of-line) (point)))
           (end (progn (back-to-indentation) (point))))
-      (<= start point end))))
+      (and (<= start point) (<= point end)))))
 
 (defun nasm-comment (&optional arg)
   "Begin or edit a comment with context-sensitive placement.
