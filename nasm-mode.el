@@ -541,13 +541,13 @@
   "Regexp for `nasm-mode' for matching labels.")
 
 (defconst nasm-constant-regexp
-  "\\_<$?[-+0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\_>"
+  "\\<$?[-+]?[0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
   "Regexp for `nasm-mode' for matching numeric constants.")
 
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
-     (regexp-opt ,keywords 'symbols)))
+     (regexp-opt ,keywords 'words)))
 
 (defconst nasm-imenu-generic-expression
   `((nil ,(concat "^\\s-*" nasm-label-regexp) 1)
