@@ -22,10 +22,10 @@
 ;; indentation and imenu support.
 
 ;; The keyword lists are up to date as of NASM 2.11.08.
+;; http://www.nasm.us/doc/nasmdocb.html
 
 ;; TODO:
 ;;  * Line continuation awareness
-;;  * Improve nasm-colon, and add comment support
 
 ;;; Code:
 
