@@ -510,7 +510,13 @@
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
 (defconst nasm-label-regexp
-  "\\(\\_<[a-zA-Z_.?][a-zA-Z0-9_$#@~.?]*\\_>\\)\\s-*:"
+  (let ((head "[a-zA-Z_?]")
+        (tail "[a-zA-Z0-9_$#@~?]"))
+    (concat "\\(?:"
+            "\\(\\_<\\." head tail "*\\_>\\)\\(?:\\s-*:\\)?"
+            "\\|"
+            "\\(\\_<" head tail "*\\_>\\)\\s-*:"
+            "\\)"))
   "Regexp for `nasm-mode' for matching labels.")
 
 (defconst nasm-constant-regexp
