@@ -663,6 +663,19 @@ With a prefix arg, kill the comment on the current line with
      ;; Otherwise insert.
      ((insert ";")))))
 
+(defun nasm-join-line (join-following-p)
+  "Like `join-line', but use a tab when joining with a label."
+  (interactive "*P")
+  (join-line join-following-p)
+  (if (looking-back nasm-label-regexp)
+      (let ((column (current-column)))
+        (cond ((< column 8)
+               (delete-char 1)
+               (insert-char ?\t))
+              ((and (= column 8) (eql ?: (char-before)))
+               (delete-char 1))))
+    (nasm-indent-line)))
+
 ;;;###autoload
 (define-derived-mode nasm-mode prog-mode "NASM"
   "Major mode for editing NASM assembly programs."
