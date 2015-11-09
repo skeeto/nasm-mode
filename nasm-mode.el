@@ -567,7 +567,7 @@
     (prog1 map
       (define-key map (kbd ":") #'nasm-colon)
       (define-key map (kbd ";") #'nasm-comment)
-      (define-key map (kbd "M-^") #'nasm-join-line)))
+      (define-key map [remap join-line] #'nasm-join-line)))
   "Key bindings for `nasm-mode'.")
 
 (defun nasm-colon ()
