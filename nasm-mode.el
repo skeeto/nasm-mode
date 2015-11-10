@@ -75,7 +75,12 @@
 
 (defface nasm-labels
   '((t :inherit (font-lock-function-name-face)))
-  "Face for label."
+  "Face for nonlocal labels."
+  :group 'nasm-mode-faces)
+
+(defface nasm-local-labels
+  '((t :inherit (font-lock-function-name-face)))
+  "Face for local labels."
   :group 'nasm-mode-faces)
 
 (defface nasm-constant
@@ -509,14 +514,16 @@
       "__UTC_TIME_NUM__" "__POSIX_TIME__" " __PASS__" "SECTALIGN")
     "NASM preprocessor directives (pptok.c) for `nasm-mode'."))
 
+(defconst nasm-nonlocal-label-rexexp
+  "\\(\\_<[a-zA-Z_?][a-zA-Z0-9_$#@~?]*\\_>\\)\\s-*:"
+  "Regexp for `nasm-mode' for matching nonlocal labels.")
+
+(defconst nasm-local-label-regexp
+  "\\(\\_<\\.[a-zA-Z_?][a-zA-Z0-9_$#@~?]*\\_>\\)\\(?:\\s-*:\\)?"
+  "Regexp for `nasm-mode' for matching local labels.")
+
 (defconst nasm-label-regexp
-  (let ((head "[a-zA-Z_?]")
-        (tail "[a-zA-Z0-9_$#@~?]"))
-    (concat "\\(?:"
-            "\\(\\_<\\." head tail "*\\_>\\)\\(?:\\s-*:\\)?"
-            "\\|"
-            "\\(\\_<" head tail "*\\_>\\)\\s-*:"
-            "\\)"))
+  (concat nasm-nonlocal-label-rexexp "\\|" nasm-local-label-regexp)
   "Regexp for `nasm-mode' for matching labels.")
 
 (defconst nasm-constant-regexp
@@ -529,20 +536,20 @@
      (regexp-opt ,keywords 'words)))
 
 (defconst nasm-imenu-generic-expression
-  `((nil ,(concat "^\\s-*" nasm-label-regexp) 1)
+  `((nil ,(concat "^\\s-*" nasm-nonlocal-label-rexexp) 1)
     (nil ,(concat (nasm--opt '("%define" "%macro"))
                   "\\s-+\\([a-zA-Z0-9_$#@~.?]+\\)") 2))
   "Expressions for `imenu-generic-expression'.")
 
 (defconst nasm-font-lock-keywords
-  `(("\\_<\\.[a-zA-Z0-9_$#@~.?]+\\_>" . font-lock-type-face)
-    (,(nasm--opt nasm-registers) . 'nasm-registers)
+  `((,(nasm--opt nasm-registers) . 'nasm-registers)
     (,(nasm--opt nasm-prefix) . 'nasm-prefix)
     (,(nasm--opt nasm-types) . 'nasm-types)
     (,(nasm--opt nasm-instructions) . 'nasm-instructions)
     (,(nasm--opt nasm-directives) . 'nasm-directives)
     (,(nasm--opt nasm-pp-directives) . 'nasm-preprocessor)
-    (,(concat "^\\s-*" nasm-label-regexp) (1 'nasm-labels))
+    (,(concat "^\\s-*" nasm-nonlocal-label-rexexp) (1 'nasm-labels))
+    (,(concat "^\\s-*" nasm-local-label-regexp) (1 'nasm-local-labels))
     (,nasm-constant-regexp . 'nasm-constant))
 "Keywords for `nasm-mode'.")
 
