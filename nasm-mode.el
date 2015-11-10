@@ -83,6 +83,11 @@
   "Face for local labels."
   :group 'nasm-mode-faces)
 
+(defface nasm-section-name
+  '((t :inherit (font-lock-type-face)))
+  "Face for section name face."
+  :group 'nasm-mode-faces)
+
 (defface nasm-constant
   '((t :inherit (font-lock-constant-face)))
   "Face for constant."
@@ -530,6 +535,10 @@
   "\\<$?[-+]?[0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
   "Regexp for `nasm-mode' for matching numeric constants.")
 
+(defconst nasm-section-name-regexp
+  "^\\s-*section[ \t]+\\(\\_<\\.[a-zA-Z0-9_$#@~.?]+\\_>\\)"
+  "Regexp for `nasm-mode' for matching section names.")
+
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
@@ -542,7 +551,8 @@
   "Expressions for `imenu-generic-expression'.")
 
 (defconst nasm-font-lock-keywords
-  `((,(nasm--opt nasm-registers) . 'nasm-registers)
+  `((,nasm-section-name-regexp (1 'nasm-section-name))
+    (,(nasm--opt nasm-registers) . 'nasm-registers)
     (,(nasm--opt nasm-prefix) . 'nasm-prefix)
     (,(nasm--opt nasm-types) . 'nasm-types)
     (,(nasm--opt nasm-instructions) . 'nasm-instructions)
