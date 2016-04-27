@@ -21,7 +21,7 @@
 ;; otherwise ambiguous between macros and labels. This covers both
 ;; indentation and imenu support.
 
-;; The keyword lists are up to date as of NASM 2.11.08.
+;; The keyword lists are up to date as of NASM 2.12.01.
 ;; http://www.nasm.us/doc/nasmdocb.html
 
 ;; TODO:
@@ -142,8 +142,8 @@
       "blsfill" "blsi" "blsic" "blsmsk" "blsr" "bndcl" "bndcn" "bndcu"
       "bndldx" "bndmk" "bndmov" "bndstx" "bound" "bsf" "bsr" "bswap"
       "bt" "btc" "btr" "bts" "bzhi" "call" "cbw" "cdq" "cdqe" "clac"
-      "clc" "cld" "clflush" "clflushopt" "clgi" "cli" "clts" "cmc"
-      "cmova" "cmovae" "cmovb" "cmovbe" "cmovc" "cmove" "cmovg"
+      "clc" "cld" "clflush" "clflushopt" "clgi" "cli" "clts" "clzero"
+      "cmc" "cmova" "cmovae" "cmovb" "cmovbe" "cmovc" "cmove" "cmovg"
       "cmovge" "cmovl" "cmovle" "cmovna" "cmovnae" "cmovnb" "cmovnbe"
       "cmovnc" "cmovne" "cmovng" "cmovnge" "cmovnl" "cmovnle" "cmovno"
       "cmovnp" "cmovns" "cmovnz" "cmovo" "cmovp" "cmovpe" "cmovpo"
@@ -211,7 +211,7 @@
       "loadall" "loadall286" "lodsb" "lodsd" "lodsq" "lodsw" "loop"
       "loope" "loopne" "loopnz" "loopz" "lsl" "lss" "ltr" "lwpins"
       "lwpval" "lzcnt" "maskmovdqu" "maskmovq" "maxpd" "maxps" "maxsd"
-      "maxss" "mfence" "minpd" "minps" "minsd" "minss" "monitor"
+      "maxss" "mfence" "minpd" "minps" "minsd" "minss" "monitor" "monitorx"
       "montmul" "mov" "movapd" "movaps" "movbe" "movd" "movddup"
       "movdq2q" "movdqa" "movdqu" "movhlps" "movhpd" "movhps"
       "movlhps" "movlpd" "movlps" "movmskpd" "movmskps" "movntdq"
@@ -219,7 +219,7 @@
       "movntss" "movq" "movq2dq" "movsb" "movsd" "movshdup" "movsldup"
       "movsq" "movss" "movsw" "movsx" "movsxd" "movupd" "movups"
       "movzx" "mpsadbw" "mul" "mulpd" "mulps" "mulsd" "mulss" "mulx"
-      "mwait" "neg" "nop" "not" "or" "orpd" "orps" "out" "outsb"
+      "mwait" "mwaitx" "neg" "nop" "not" "or" "orpd" "orps" "out" "outsb"
       "outsd" "outsw" "pabsb" "pabsd" "pabsw" "packssdw" "packsswb"
       "packusdw" "packuswb" "paddb" "paddd" "paddq" "paddsb" "paddsiw"
       "paddsw" "paddusb" "paddusw" "paddw" "palignr" "pand" "pandn"
