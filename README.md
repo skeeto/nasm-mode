@@ -7,5 +7,12 @@ NASM-specific syntax. Requires Emacs 24.3 or higher.
 
 The instruction and keyword lists are from NASM 2.11.08.
 
+## Known Issues
+
+* Due to limitations of Emacs' syntax tables, like many other major
+  modes, double and single quoted strings don't properly handle
+  backslashes, which, unlike backquoted strings, aren't escapes in
+  NASM syntax.
+
 
 [nasm]: http://www.nasm.us/
