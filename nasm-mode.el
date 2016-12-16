@@ -699,6 +699,7 @@ With a prefix arg, kill the comment on the current line with
   "Major mode for editing NASM assembly programs."
   :group 'nasm-mode
   (make-local-variable 'indent-line-function)
+  (make-local-variable 'comment-start)
   (setf font-lock-defaults '(nasm-font-lock-keywords nil :case-fold)
         indent-line-function #'nasm-indent-line
         comment-start ";"
