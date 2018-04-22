@@ -699,10 +699,10 @@ With a prefix arg, kill the comment on the current line with
   (join-line join-following-p)
   (if (looking-back nasm-label-regexp (line-beginning-position))
       (let ((column (current-column)))
-        (cond ((< column 8)
+        (cond ((< column nasm-basic-offset)
                (delete-char 1)
                (insert-char ?\t))
-              ((and (= column 8) (eql ?: (char-before)))
+              ((and (= column nasm-basic-offset) (eql ?: (char-before)))
                (delete-char 1))))
     (nasm-indent-line)))
 
