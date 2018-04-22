@@ -26,9 +26,14 @@
 
 ;; TODO:
 ;; [ ] Line continuation awareness
-;; [ ] Don't run comment command if type ';' inside a string
+;; [x] Don't run comment command if type ';' inside a string
 ;; [ ] Nice multi-; comments, like in asm-mode
 ;; [x] Be able to hit tab after typing mnemonic and insert a TAB
+;; [ ] Autocompletion
+;; [ ] Help menu with basic summaries of instructions
+;; [ ] Highlight errors, e.g. size mismatches "mov al, dword [rbx]"
+;; [ ] Work nicely with outline-minor-mode
+;; [ ] Highlighting of multiline macro definition arguments
 
 ;;; Code:
 
