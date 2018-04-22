@@ -594,19 +594,31 @@
   (nasm-indent-line))
 
 (defun nasm-indent-line ()
-  "Indent current line as NASM assembly code."
+  "Indent current line (or insert a tab) as NASM assembly code.
+This will be called by `indent-for-tab-command' when TAB is
+pressed. We indent the entire line as appropriate whenever POINT
+is not immediately after a mnemonic; otherwise, we insert a tab."
   (interactive)
-  (let ((orig (- (point-max) (point))))
-    (back-to-indentation)
-    (if (or (looking-at (nasm--opt nasm-directives))
-            (looking-at (nasm--opt nasm-pp-directives))
-            (looking-at "\\[")
-            (looking-at ";;+")
-            (looking-at nasm-label-regexp))
-        (indent-line-to 0)
-      (indent-line-to nasm-basic-offset))
-    (when (> (- (point-max) orig) (point))
-      (goto-char (- (point-max) orig)))))
+  (let ((before      ; text before point and after indentation
+         (save-excursion
+           (let ((point (point))
+                 (bti (progn (back-to-indentation) (point))))
+             (buffer-substring-no-properties bti point)))))
+    (if (member before nasm-instructions)
+        ;; We are immediately after an instruction, just insert a tab
+        (insert "\t")
+      ;; We're literally anywhere else, indent the whole line
+      (let ((orig (- (point-max) (point))))
+        (back-to-indentation)
+        (if (or (looking-at (nasm--opt nasm-directives))
+                (looking-at (nasm--opt nasm-pp-directives))
+                (looking-at "\\[")
+                (looking-at ";;+")
+                (looking-at nasm-label-regexp))
+            (indent-line-to 0)
+          (indent-line-to nasm-basic-offset))
+        (when (> (- (point-max) orig) (point))
+          (setf (point) (- (point-max) orig)))))))
 
 (defun nasm--current-line ()
   "Return the current line as a string."
