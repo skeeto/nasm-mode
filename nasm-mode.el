@@ -25,7 +25,10 @@
 ;; http://www.nasm.us/doc/nasmdocb.html
 
 ;; TODO:
-;;  * Line continuation awareness
+;; [ ] Line continuation awareness
+;; [ ] Don't run comment command if type ';' inside a string
+;; [ ] Nice multi-; comments, like in asm-mode
+;; [x] Be able to hit tab after typing mnemonic and insert a TAB
 
 ;;; Code:
 
