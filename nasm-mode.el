@@ -685,7 +685,7 @@ With a prefix arg, kill the comment on the current line with
   "Like `join-line', but use a tab when joining with a label."
   (interactive "*P")
   (join-line join-following-p)
-  (if (looking-back nasm-label-regexp)
+  (if (looking-back nasm-label-regexp (line-beginning-position))
       (let ((column (current-column)))
         (cond ((< column 8)
                (delete-char 1)
