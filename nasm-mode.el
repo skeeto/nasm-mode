@@ -553,6 +553,14 @@
                   "\\s-+\\([a-zA-Z0-9_$#@~.?]+\\)") 2))
   "Expressions for `imenu-generic-expression'.")
 
+(defconst nasm-full-instruction-regexp
+  (eval-when-compile
+    (let ((pfx (nasm--opt nasm-prefix))
+          (ins (nasm--opt nasm-instructions)))
+      (concat "^\\(" pfx "\\s-+\\)?" ins "$")))
+  "Regexp for `nasm-mode' matching a valid full NASM instruction field.
+This includes prefixes or modifiers (eg \"mov\", \"rep mov\", etc match)")
+
 (defconst nasm-font-lock-keywords
   `((,nasm-section-name-regexp (1 'nasm-section-name))
     (,(nasm--opt nasm-registers) . 'nasm-registers)
@@ -607,7 +615,7 @@ is not immediately after a mnemonic; otherwise, we insert a tab."
            (let ((point (point))
                  (bti (progn (back-to-indentation) (point))))
              (buffer-substring-no-properties bti point)))))
-    (if (member before nasm-instructions)
+    (if (string-match nasm-full-instruction-regexp before)
         ;; We are immediately after an instruction, just insert a tab
         (insert "\t")
       ;; We're literally anywhere else, indent the whole line
