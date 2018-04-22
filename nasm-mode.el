@@ -564,7 +564,7 @@
     (,(concat "^\\s-*" nasm-nonlocal-label-rexexp) (1 'nasm-labels))
     (,(concat "^\\s-*" nasm-local-label-regexp) (1 'nasm-local-labels))
     (,nasm-constant-regexp . 'nasm-constant))
-"Keywords for `nasm-mode'.")
+  "Keywords for `nasm-mode'.")
 
 (defconst nasm-mode-syntax-table
   (with-syntax-table (copy-syntax-table)
