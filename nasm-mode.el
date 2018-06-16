@@ -49,6 +49,7 @@
 
 (defcustom nasm-basic-offset (default-value 'tab-width)
   "Indentation level for `nasm-mode'."
+  :type 'integer
   :group 'nasm-mode)
 
 (defcustom nasm-after-mnemonic-whitespace :tab
