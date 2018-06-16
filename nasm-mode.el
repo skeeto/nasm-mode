@@ -51,6 +51,11 @@
   "Indentation level for `nasm-mode'."
   :group 'nasm-mode)
 
+; NOTE (sonictk) Allow for customizing behaviour of inserting tabs/spaces
+(defcustom nasm-use-tabs (default-value 't)
+  "Indentation for `nasm-mode' to use tabs/spaces. Set to ``nil`` to use spaces and ``t`` to use tabs."
+  :group 'nasm-mode)
+
 (defface nasm-registers
   '((t :inherit (font-lock-variable-name-face)))
   "Face for registers."
@@ -621,8 +626,12 @@ is not immediately after a mnemonic; otherwise, we insert a tab."
                  (bti (progn (back-to-indentation) (point))))
              (buffer-substring-no-properties bti point)))))
     (if (string-match nasm-full-instruction-regexp before)
-        ;; We are immediately after an instruction, just insert a tab
-        (insert "\t")
+        (if (equal nasm-use-tabs t)
+            ;; We are immediately after an instruction, just insert a tab
+            (insert "\t")
+            ; If tabs are not set in prefs, use the default instead
+            (insert-char ?\s nasm-basic-offset)
+        )
       ;; We're literally anywhere else, indent the whole line
       (let ((orig (- (point-max) (point))))
         (back-to-indentation)
