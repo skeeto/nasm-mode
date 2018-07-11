@@ -749,8 +749,8 @@ With a prefix arg, kill the comment on the current line with
   (setf font-lock-defaults '(nasm-font-lock-keywords nil :case-fold)
         indent-line-function #'nasm-indent-line
         comment-start ";"
-        comment-indent-function 'nasm-comment-indent
-        comment-insert-comment-function 'nasm-insert-comment
+        comment-indent-function #'nasm-comment-indent
+        comment-insert-comment-function #'nasm-insert-comment
         imenu-generic-expression nasm-imenu-generic-expression))
 
 (provide 'nasm-mode)
