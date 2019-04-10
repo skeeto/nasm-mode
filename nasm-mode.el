@@ -746,6 +746,8 @@ With a prefix arg, kill the comment on the current line with
   :group 'nasm-mode
   (make-local-variable 'indent-line-function)
   (make-local-variable 'comment-start)
+  (make-local-variable 'comment-insert-comment-function)
+  (make-local-variable 'comment-indent-function)
   (setf font-lock-defaults '(nasm-font-lock-keywords nil :case-fold)
         indent-line-function #'nasm-indent-line
         comment-start ";"
