@@ -557,7 +557,7 @@ This can be :tab, :space, or nil (do nothing)."
 (defmacro nasm--opt (keywords)
   "Prepare KEYWORDS for `looking-at'."
   `(eval-when-compile
-     (regexp-opt ,keywords 'words)))
+     (regexp-opt ,keywords 'symbols)))
 
 (defconst nasm-imenu-generic-expression
   `((nil ,(concat "^\\s-*" nasm-nonlocal-label-rexexp) 1)
