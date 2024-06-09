@@ -547,7 +547,7 @@ This can be :tab, :space, or nil (do nothing)."
   "Regexp for `nasm-mode' for matching labels.")
 
 (defconst nasm-constant-regexp
-  "\\<$?[-+]?[0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\>"
+  "\\_<$?[-+]?[0-9][-+_0-9A-Fa-fHhXxDdTtQqOoBbYyeE.]*\\_>"
   "Regexp for `nasm-mode' for matching numeric constants.")
 
 (defconst nasm-section-name-regexp
