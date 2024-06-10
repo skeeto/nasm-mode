@@ -643,7 +643,7 @@ is not immediately after a mnemonic; otherwise, we insert a tab."
             (indent-line-to 0)
           (indent-line-to nasm-basic-offset))
         (when (> (- (point-max) orig) (point))
-          (setf (point) (- (point-max) orig)))))))
+          (goto-char (- (point-max) orig)))))))
 
 (defun nasm--current-line ()
   "Return the current line as a string."
