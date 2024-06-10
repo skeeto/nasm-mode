@@ -718,7 +718,7 @@ With a prefix arg, kill the comment on the current line with
      ((and (nasm--line-has-comment-p)
            (nasm--line-has-non-comment-p)
            (nth 4 (syntax-ppss)))
-      (setf (point) (mark))
+      (goto-char (mark))
       (pop-mark))
      ;; Line has code? Mark and jump to right-side comment.
      ((nasm--line-has-non-comment-p)
