@@ -9,7 +9,7 @@
 
 ;;; Commentary:
 
-;; A major mode for editing NASM x86 assembly programs. It includes
+;; A major mode for editing NASM x86 assembly programs.  It includes
 ;; syntax highlighting, automatic indentation, and imenu integration.
 ;; Unlike Emacs' generic `asm-mode`, it understands NASM-specific
 ;; syntax.
@@ -18,7 +18,7 @@
 
 ;; Labels without colons are not recognized as labels by this mode,
 ;; since, without a parser equal to that of NASM itself, it's
-;; otherwise ambiguous between macros and labels. This covers both
+;; otherwise ambiguous between macros and labels.  This covers both
 ;; indentation and imenu support.
 
 ;; The keyword lists are up to date as of NASM 2.12.01.
@@ -619,7 +619,7 @@ This includes prefixes or modifiers (eg \"mov\", \"rep mov\", etc match)")
 (defun nasm-indent-line ()
   "Indent current line (or insert a tab) as NASM assembly code.
 This will be called by `indent-for-tab-command' when TAB is
-pressed. We indent the entire line as appropriate whenever POINT
+pressed.  We indent the entire line as appropriate whenever POINT
 is not immediately after a mnemonic; otherwise, we insert a tab."
   (interactive)
   (let ((before      ; text before point and after indentation
@@ -702,7 +702,7 @@ code and the comment gutter.
   This is intended prevent interference when the intention is to
   comment out the line.
 
-With a prefix arg, kill the comment on the current line with
+With a prefix ARG, kill the comment on the current line with
 `comment-kill'."
   (interactive "p")
   (if (not (eql arg 1))
@@ -727,10 +727,12 @@ With a prefix arg, kill the comment on the current line with
      ;; Otherwise insert.
      ((insert ";")))))
 
-(defun nasm-join-line (join-following-p)
-  "Like `join-line', but use a tab when joining with a label."
+(defun nasm-join-line (&optional arg)
+  "Join this line to previous, but use a tab when joining with a label.
+With prefix ARG, join the current line to the following line.  See `join-line'
+for more information."
   (interactive "*P")
-  (join-line join-following-p)
+  (join-line arg)
   (if (looking-back nasm-label-regexp (line-beginning-position))
       (let ((column (current-column)))
         (cond ((< column nasm-basic-offset)
