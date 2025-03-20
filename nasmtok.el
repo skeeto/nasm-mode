@@ -10,12 +10,12 @@
 
 ;;; Code:
 
-(defconst nasm-decorators
+(defconst nasm-decorator
   '("1to16" "1to2" "1to32" "1to4" "1to8" "rd-sae" "rn-sae" "ru-sae" "rz-sae"
     "sae" "z")
   "NASM 2.16.03 decorator tokens for `nasm-mode'.")
 
-(defconst nasm-directives
+(defconst nasm-directive
   '("absolute" "bits" "common" "cpu" "debug" "default" "export" "extern"
     "float" "global" "gprefix" "group" "gsuffix" "import" "library" "limit"
     "list" "lprefix" "lsuffix" "map" "maxdump" "module" "no_dead_strip"
@@ -24,7 +24,7 @@
     "subsections_via_symbols" "suffix" "uppercase" "warning")
   "NASM 2.16.03 directive tokens for `nasm-mode'.")
 
-(defconst nasm-functions
+(defconst nasm-function
   '("__?bfloat16?__" "__?float128h?__" "__?float128l?__" "__?float16?__"
     "__?float32?__" "__?float64?__" "__?float80e?__" "__?float80m?__"
     "__?float8?__" "__?ilog2c?__" "__?ilog2e?__" "__?ilog2f?__"
@@ -36,7 +36,7 @@
     "utf16be" "utf16le" "utf32" "utf32be" "utf32le")
   "NASM 2.16.03 function tokens for `nasm-mode'.")
 
-(defconst nasm-instructions
+(defconst nasm-instruction
   '("aaa" "aad" "aadd" "aam" "aand" "aas" "adc" "adcx" "add" "addpd" "addps"
     "addsd" "addss" "addsubpd" "addsubps" "adox" "aesdec" "aesdeclast"
     "aesenc" "aesenclast" "aesimc" "aeskeygenassist" "and" "andn" "andnpd"
@@ -398,12 +398,12 @@
     "xtest")
   "NASM 2.16.03 instruction tokens for `nasm-mode'.")
 
-(defconst nasm-operators
+(defconst nasm-operator
   '("!=" "%%" "&&" "//" "<<" "<<<" "<=" "<=>" "<>" "==" ">=" ">>" ">>>" "?"
     "^^" "||")
   "NASM 2.16.03 operator tokens for `nasm-mode'.")
 
-(defconst nasm-pp-directives
+(defconst nasm-pp-directive
   '("%aliases" "%arg" "%assign" "%clear" "%defalias" "%define" "%defstr"
     "%deftok" "%depend" "%elif" "%elifctx" "%elifdef" "%elifdefalias"
     "%elifdifi" "%elifempty" "%elifenv" "%elifid" "%elifidn" "%elifidni"
@@ -431,7 +431,7 @@
     "vex3" "wait" "xacquire" "xrelease")
   "NASM 2.16.03 prefix tokens for `nasm-mode'.")
 
-(defconst nasm-registers
+(defconst nasm-register
   '("ah" "al" "ax" "bh" "bl" "bnd0" "bnd1" "bnd2" "bnd3" "bp" "bpl" "bx" "ch"
     "cl" "cr0" "cr1" "cr10" "cr11" "cr12" "cr13" "cr14" "cr15" "cr2" "cr3"
     "cr4" "cr5" "cr6" "cr7" "cr8" "cr9" "cs" "cx" "dh" "di" "dil" "dl" "dr0"
@@ -458,7 +458,7 @@
     "zmm7" "zmm8" "zmm9")
   "NASM 2.16.03 register tokens for `nasm-mode'.")
 
-(defconst nasm-sizes
+(defconst nasm-size
   '("byte" "dword" "oword" "qword" "tword" "word" "yword" "zword")
   "NASM 2.16.03 size tokens for `nasm-mode'.")
 
