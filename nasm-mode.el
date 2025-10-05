@@ -60,7 +60,8 @@ This can be :tab, :space, or nil (do nothing)."
   :group 'nasm-mode)
 
 ;; TODO: It's a bit counter-intuitive that the faces are called 'nasm-FOOs' and
-;; the actual token lists are called 'nasm-FOO'.
+;; the actual token lists are called 'nasm-FOO'. Perhaps a '-face' suffix should
+;; be used.
 (defface nasm-registers
   '((t :inherit (font-lock-variable-name-face)))
   "Face for registers."
@@ -69,6 +70,11 @@ This can be :tab, :space, or nil (do nothing)."
 (defface nasm-prefix
   '((t :inherit (font-lock-builtin-face)))
   "Face for prefix."
+  :group 'nasm-mode-faces)
+
+(defface nasm-special
+  '((t :inherit (font-lock-builtin-face)))
+  "Face for special tokens."
   :group 'nasm-mode-faces)
 
 (defface nasm-types
@@ -111,12 +117,20 @@ This can be :tab, :space, or nil (do nothing)."
   "Face for constant."
   :group 'nasm-mode-faces)
 
-;; Perhaps they are not all "types" strictly speaking, but they share the same
-;; syntax highlighting.
 (eval-and-compile
-  (defconst nasm-types
-    (append nasm-decorator nasm-function nasm-size nasm-special)
-    "NASM types for `nasm-mode'."))
+  (defconst nasm-specials
+    (append nasm-special nasm-special-constant)
+    "NASM tokens that share the \"special\" syntax in `nasm-mode'."))
+
+(eval-and-compile
+  (defconst nasm-type
+    (append nasm-decorator nasm-size)
+    "NASM tokens that share the \"type\" syntax in `nasm-mode'."))
+
+(eval-and-compile
+  (defconst nasm-preprocessor
+    (append nasm-pp-directive nasm-mmacro nasm-smacro)
+    "NASM tokens that share the \"preprocessor\" syntax in `nasm-mode'."))
 
 (defconst nasm-nonlocal-label-rexexp
   "\\(\\_<[a-zA-Z_?][a-zA-Z0-9_$#@~?]*\\_>\\)\\s-*:"
@@ -157,13 +171,19 @@ This can be :tab, :space, or nil (do nothing)."
   "Regexp for `nasm-mode' matching a valid full NASM instruction field.
 This includes prefixes or modifiers (eg \"mov\", \"rep mov\", etc match)")
 
+;; TODO: Highlight missing `nasm-operator' tokens from 'nasmtok.el'.
+;;
+;; TODO: Tokens matching "^{.+=}$" should actually match "^{.+=.*}$". Perhaps
+;; this could be fixed by a simple text replacement in a wrapper, before
+;; applying `nasm--opt'.
 (defconst nasm-font-lock-keywords
   `((,nasm-section-name-regexp (1 'nasm-section-name))
     (,(nasm--opt nasm-register) . 'nasm-registers)
     (,(nasm--opt nasm-prefix) . 'nasm-prefix)
-    (,(nasm--opt nasm-types) . 'nasm-types)
+    (,(nasm--opt nasm-specials) . 'nasm-special)
+    (,(nasm--opt nasm-type) . 'nasm-types)
     (,(nasm--opt nasm-instruction) . 'nasm-instructions)
-    (,(nasm--opt nasm-pp-directive) . 'nasm-preprocessor)
+    (,(nasm--opt nasm-preprocessor) . 'nasm-preprocessor)
     (,(concat "^\\s-*" nasm-nonlocal-label-rexexp) (1 'nasm-labels))
     (,(concat "^\\s-*" nasm-local-label-regexp) (1 'nasm-local-labels))
     (,nasm-constant-regexp . 'nasm-constant)
