@@ -137,10 +137,54 @@ This can be :tab, :space, or nil (do nothing)."
   "^\\s-*section[ \t]+\\(\\_<\\.[a-zA-Z0-9_$#@~.?]+\\_>\\)"
   "Regexp for `nasm-mode' for matching section names.")
 
+;; Compile-time functions used by `nasm--opt'.
+(eval-when-compile
+  (defun nasm--split (list predicate)
+    "Split a LIST depending on a PREDICATE.
+
+The returned value is a two-element list; the car is list that contains all
+elements of LIST that match PREDICATE, and the cdr contains the remaining
+elements.  The original order of LIST is respected."
+    (let (matching non-matching)
+      (dolist (element list)
+        (if (funcall predicate element)
+            (push element matching)
+          (push element non-matching)))
+      (list (nreverse matching) (nreverse non-matching))))
+
+  (defconst nasm--parametric-keyword-regexp "\\`{\\(?1:.+\\)=}\\'"
+    "Regexp for parametric NASM keywords.
+Group 1 contains data that should be quoted with `regexp-quote'.")
+
+  (defun nasm--is-parametric-keyword (keyword)
+    "Check if the specified KEYWORD is a NASM parametric keyword."
+    (string-match-p nasm--parametric-keyword-regexp keyword))
+
+  (defun nasm--get-parametric-regexp (keyword)
+    "Get the correct regexp for a NASM parametric KEYWORD."
+    (save-match-data
+      (string-match nasm--parametric-keyword-regexp keyword)
+      (concat "{" (regexp-quote (match-string 1 keyword)) "=.*}"))))
+
 (defmacro nasm--opt (&rest keyword-lists)
-  "Combine one or many KEYWORD-LISTS into a regexp for `looking-at'."
+  "Combine one or many KEYWORD-LISTS into a regexp for `looking-at'.
+
+Keywords matching `nasm--parametric-keyword-regexp' will be expanded using
+`nasm--get-parametric-regexp'."
   `(eval-when-compile
-     (regexp-opt (append ,@keyword-lists) 'symbols)))
+     (let* ((split-keyword-list
+             (nasm--split (append ,@keyword-lists)
+                          #'nasm--is-parametric-keyword))
+            (parametric-keywords (car split-keyword-list))
+            (non-parametric-keywords (cadr split-keyword-list)))
+       (concat "\\_<\\("
+               (regexp-opt non-parametric-keywords 'paren)
+               (mapconcat (lambda (keyword)
+                            (concat "\\|\\("
+                                    (nasm--get-parametric-regexp keyword)
+                                    "\\)"))
+                          parametric-keywords)
+               "\\)\\_>"))))
 
 (defconst nasm-imenu-generic-expression
   `((nil ,(concat "^\\s-*" nasm-nonlocal-label-rexexp) 1)
@@ -157,10 +201,6 @@ This can be :tab, :space, or nil (do nothing)."
 This includes prefixes or modifiers (eg \"mov\", \"rep mov\", etc match)")
 
 ;; TODO: Highlight missing `nasm-operator' tokens from 'nasmtok.el'.
-;;
-;; TODO: Tokens matching "^{.+=}$" should actually match "^{.+=.*}$". Perhaps
-;; this could be fixed by a simple text replacement in a wrapper, before
-;; applying `nasm--opt'.
 (defconst nasm-font-lock-keywords
   `((,nasm-section-name-regexp (1 'nasm-section-name))
     (,(nasm--opt nasm-register) . 'nasm-registers)
@@ -181,6 +221,8 @@ This includes prefixes or modifiers (eg \"mov\", \"rep mov\", etc match)")
     (modify-syntax-entry ?_  "_")
     (modify-syntax-entry ?#  "_")
     (modify-syntax-entry ?@  "_")
+    (modify-syntax-entry ?{  "_")
+    (modify-syntax-entry ?}  "_")
     (modify-syntax-entry ?\? "_")
     (modify-syntax-entry ?~  "_")
     (modify-syntax-entry ?\. "w")
