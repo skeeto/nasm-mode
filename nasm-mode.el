@@ -117,21 +117,6 @@ This can be :tab, :space, or nil (do nothing)."
   "Face for constant."
   :group 'nasm-mode-faces)
 
-(eval-and-compile
-  (defconst nasm-specials
-    (append nasm-special nasm-special-constant)
-    "NASM tokens that share the \"special\" syntax in `nasm-mode'."))
-
-(eval-and-compile
-  (defconst nasm-type
-    (append nasm-decorator nasm-size)
-    "NASM tokens that share the \"type\" syntax in `nasm-mode'."))
-
-(eval-and-compile
-  (defconst nasm-preprocessor
-    (append nasm-pp-directive nasm-mmacro nasm-smacro)
-    "NASM tokens that share the \"preprocessor\" syntax in `nasm-mode'."))
-
 (defconst nasm-nonlocal-label-rexexp
   "\\(\\_<[a-zA-Z_?][a-zA-Z0-9_$#@~?]*\\_>\\)\\s-*:"
   "Regexp for `nasm-mode' for matching nonlocal labels.")
@@ -152,10 +137,10 @@ This can be :tab, :space, or nil (do nothing)."
   "^\\s-*section[ \t]+\\(\\_<\\.[a-zA-Z0-9_$#@~.?]+\\_>\\)"
   "Regexp for `nasm-mode' for matching section names.")
 
-(defmacro nasm--opt (keywords)
-  "Prepare KEYWORDS for `looking-at'."
+(defmacro nasm--opt (&rest keyword-lists)
+  "Combine one or many KEYWORD-LISTS into a regexp for `looking-at'."
   `(eval-when-compile
-     (regexp-opt ,keywords 'symbols)))
+     (regexp-opt (append ,@keyword-lists) 'symbols)))
 
 (defconst nasm-imenu-generic-expression
   `((nil ,(concat "^\\s-*" nasm-nonlocal-label-rexexp) 1)
@@ -180,10 +165,11 @@ This includes prefixes or modifiers (eg \"mov\", \"rep mov\", etc match)")
   `((,nasm-section-name-regexp (1 'nasm-section-name))
     (,(nasm--opt nasm-register) . 'nasm-registers)
     (,(nasm--opt nasm-prefix) . 'nasm-prefix)
-    (,(nasm--opt nasm-specials) . 'nasm-special)
-    (,(nasm--opt nasm-type) . 'nasm-types)
+    (,(nasm--opt nasm-special nasm-special-constant) . 'nasm-special)
+    (,(nasm--opt nasm-decorator nasm-size) . 'nasm-types)
     (,(nasm--opt nasm-instruction) . 'nasm-instructions)
-    (,(nasm--opt nasm-preprocessor) . 'nasm-preprocessor)
+    (,(nasm--opt nasm-pp-directive nasm-mmacro nasm-smacro)
+     . 'nasm-preprocessor)
     (,(concat "^\\s-*" nasm-nonlocal-label-rexexp) (1 'nasm-labels))
     (,(concat "^\\s-*" nasm-local-label-regexp) (1 'nasm-local-labels))
     (,nasm-constant-regexp . 'nasm-constant)
