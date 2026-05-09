@@ -227,6 +227,7 @@ is not immediately after a mnemonic; otherwise, we insert a tab."
         (back-to-indentation)
         (if (or (looking-at (nasm--opt nasm-directive))
                 (looking-at (nasm--opt nasm-pp-directive))
+                (looking-at (nasm--opt nasm-mmacro))
                 (looking-at "\\[")
                 (looking-at ";;+")
                 (looking-at nasm-label-regexp))
